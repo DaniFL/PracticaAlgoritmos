@@ -15,11 +15,11 @@ import java.util.function.Function;
          * Ejemplares: array de elementos aleatorios, array oredenado y array en orden inverso. Tamaños 100, 1000, 10000, 100000, 1000000, 10000000.
          * El resultado del análisis, los tiempos de ejecución de los algoritmos para los distintos ejemplares, se graba en el fichero tiempos.txt, en el directorio del proyecto
          */
-        public static void desordena(long[] L) {
-            Random random = new Random(L.length);
-            for (int i = 0; i < L.length; i++) {
-                int p = random.nextInt(L.length);
-                long aux = L[i];
+        public static void desordena(long[] L) {  // desordena un array
+            Random random = new Random(L.length);  // genera un número aleatorio
+            for (int i = 0; i < L.length; i++) {    // intercambia elementos aleatoriamente
+                int p = random.nextInt(L.length);   // genera un número aleatorio
+                long aux = L[i];                     // intercambia los elementos
                 L[i] = L[p];
                 L[p] = aux;
             }
@@ -51,12 +51,12 @@ import java.util.function.Function;
             return A;
         }
 
-        public static long [] mergesort(long []A,int izq, int der){
-            if (izq < der){
-                int m=(izq+der)/2;
-                mergesort(A,izq, m);
-                mergesort(A,m+1, der);
-                merge(A,izq, m, der);
+        public static long [] mergesort(long []A,int izq, int der){     // método de ordenación por mezcla
+            if (izq < der){                                             // si no se ha llegado al final del array
+                int m=(izq+der)/2;                                      // calcula el centro del array
+                mergesort(A,izq, m);                                    // ordena la primera mitad
+                mergesort(A,m+1, der);                              // ordena la segunda mitad
+                merge(A,izq, m, der);                                   // une las dos mitades en el array original
             }
             return A;
         }
@@ -80,18 +80,20 @@ import java.util.function.Function;
         }
         public static void main(String[] args) {
 
-            Function<long[], long[]> BusquedaLineal = L -> {
-                long[] resultado = new long[L.length];
-                for (int i = 0; i < L.length; i++) {
-                    resultado[i] = L[i];
+            Function<long[], long[]> BusquedaLineal = L ->
+            {                                                   // método de ordenación por búsqueda lineal
+                long[] resultado = new long[L.length];          // crea array de resultado
+                for (int i = 0; i < L.length; i++) {            // recorre el array original
+                    resultado[i] = L[i];                  // copia el elemento en el array de resultado
                 }
                 return resultado;
             };
 
             // funcion busqueda binaria con un array de longs
-            Function<long[], long[]> BusquedaBinaria = L -> {
-                long[] resultado = new long[L.length];  // array de longs
-                for (int i = 0; i < L.length; i++) {    // copia el array original
+            Function<long[], long[]> BusquedaBinaria = L ->
+            {                                   // método de ordenación por búsqueda binaria
+                long[] resultado = new long[L.length];       // array de longs
+                for (int i = 0; i < L.length; i++) {       // copia el array original
                     resultado[i] = L[i];
                 }
                 Arrays.sort(resultado);                 // ordena el array  de longs
@@ -99,55 +101,59 @@ import java.util.function.Function;
             };
 
             Function<long[], long[]> BubbleSort = L ->
-            {
-                for (int i = 1; i < L.length; i++)
-                    for (int j = L.length - 1; j >= i; j--)
-                        if (L[j - 1] > L[j]) {
-                            long Aux = L[j];
-                            L[j] = L[j - 1];
-                            L[j - 1] = Aux;
+            {                                           // funcion de ordenación por burbuja
+                for (int i = 1; i < L.length; i++)      // recorre el array
+                    for (int j = L.length - 1; j >= i; j--)     // recorre el array desde el final
+                        if (L[j - 1] > L[j]) {          // si el elemento anterior es mayor que el actual
+                            long Aux = L[j];            // intercambia los elementos
+                            L[j] = L[j - 1];        // intercambia los elementos
+                            L[j - 1] = Aux;        // intercambia los elementos
                         }
                 return L;
             };
 
             Function<long[], long[]> SelectSort = L ->
-            {
-                for (int i = 0; i < L.length - 1; i++) {
-                    int pmin = i; //posición elemento minimo enre i y lenght -1
-                    for (int j = i + 1; j < L.length; j++)
-                        if (L[j] < L[pmin]) {
-                            pmin = j;
+            {                                                 // funcion de ordenación por selección
+                for (int i = 0; i < L.length - 1; i++) {     // recorre el array
+                    int pmin = i;                           //posición elemento minimo enre i y lenght -1
+                    for (int j = i + 1; j < L.length; j++)   // recorre el array desde i+1 hasta lenght
+                        if (L[j] < L[pmin]) {                 // si el elemento actual es menor que el elemento minimo
+                            pmin = j;                        // actualiza la posición del elemento minimo
                         }
-                    long Aux = L[pmin];
-                    L[pmin] = L[i];
-                    L[i] = Aux;
+                    long Aux = L[pmin];             // intercambia los elementos
+                    L[pmin] = L[i];                // intercambia los elementos
+                    L[i] = Aux;                   // intercambia los elementos
 
                 }
                 return L;
             };
 
             Function<long[], long[]> DirectInsertion = L ->
-            {
-                for (int i = 1; i < L.length; i++) {
-                    long carta = L[i];
-                    int j = i - 1;
-                    while (j >= 0 && L[j] > carta) {
-                        L[j + 1] = L[j];
-                        j = j - 1;
+            {                                       // funcion de ordenación por inserción directa
+                for (int i = 1; i < L.length; i++) {     // recorre el array
+                    long carta = L[i];                 // guarda el elemento actual en una variable
+                    int j = i - 1;                    // inicializa la posición del elemento anterior
+                    while (j >= 0 && L[j] > carta) {     // mientras la posición del elemento anterior sea mayor que la posición actual
+                        L[j + 1] = L[j];        // intercambia los elementos
+                        j = j - 1;             // decrementa la posición del elemento anterior
                     }
-                    L[j + 1] = carta;
+                    L[j + 1] = carta;             // intercambia los elementos
 
                 }
                 return L;
             };
 
-            Function<long[], long[]>  MergeSort = L->
-                    mergesort(L,0,L.length-1);
-
+            Function<long[], long[]> MergeSort = L ->
+            {                                           // funcion de ordenación por mezcla
+            mergesort(L, 0, L.length - 1);        // llama a la funcion mergesort
+            return L;                           // retorna el array ordenado
+            };
 
             Function<long[], long[]>  QuickSort = L->
-                    quicksort(L,0,L.length-1);
-
+            {                                           // funcion de ordenación por mezcla
+                quicksort(L,0,L.length-1);             // llama a la funcion quicksort
+                return L;                                       // retorna el array ordenado
+            };
 
             long[][] JuegoPruebasAleatorio = new long[6][];
             long[][] JuegoPruebasOrdenado = new long[6][];
@@ -171,7 +177,7 @@ import java.util.function.Function;
                 out.println("BubbleSort");
                 for (int i = 0; i < 3; i++) {
                     out.print(tam + "\t");
-                    System.out.println("tamaño: " + tam);
+                    //System.out.println("tamaño: " + tam);
                     resultado = Analizador.analiza(JuegoPruebasAleatorio[i], BubbleSort, out);
                     //System.out.println("aleatorio: "+Arrays.toString(JuegoPruebasAleatorio[i]));
                     //System.out.println("ordenado: "+Arrays.toString(resultado));
@@ -190,18 +196,18 @@ import java.util.function.Function;
                 tam = 100;
                 for (int i = 0; i < 3; i++) {
                     out.print(tam + "\t");
-                    System.out.println("tamaño: " + tam);
+                    //System.out.println("tamaño: " + tam);
                     resultado = Analizador.analiza(JuegoPruebasAleatorio[i], SelectSort, out);
-                    System.out.println("aleatorio: " + Arrays.toString(JuegoPruebasAleatorio[i]));
-                    System.out.println("ordenado: " + Arrays.toString(resultado));
-
+                    //System.out.println("aleatorio: " + Arrays.toString(JuegoPruebasAleatorio[i]));
+                    //System.out.println("ordenado: " + Arrays.toString(resultado));
                     resultado = Analizador.analiza(JuegoPruebasOrdenado[i], SelectSort, out);
-                    System.out.println("ya ordenado: " + Arrays.toString(JuegoPruebasOrdenado[i]));
-                    System.out.println("ordenado: " + Arrays.toString(resultado));
+                    //System.out.println("ya ordenado: " + Arrays.toString(JuegoPruebasOrdenado[i]));
 
+                    //System.out.println("ordenado: " + Arrays.toString(resultado));
                     resultado = Analizador.analiza(JuegoPruebasInverso[i], SelectSort, out);
-                    System.out.println("inverso: " + Arrays.toString(JuegoPruebasInverso[i]));
-                    System.out.println("ordenado: " + Arrays.toString(resultado));
+
+                    //System.out.println("inverso: " + Arrays.toString(JuegoPruebasInverso[i]));
+                    //System.out.println("ordenado: " + Arrays.toString(resultado));
                     out.println();
                     tam *= 10;
                 }
@@ -209,35 +215,37 @@ import java.util.function.Function;
                 tam = 100;
                 for (int i = 0; i < 3; i++) {
                     out.print(tam + "\t");
-                    System.out.println("tamaño: " + tam);
+                    //System.out.println("tamaño: " + tam);
                     resultado = Analizador.analiza(JuegoPruebasAleatorio[i], BubbleSort, out);
-                    System.out.println("aleatorio: " + Arrays.toString(JuegoPruebasAleatorio[i]));
-                    System.out.println("ordenado: " + Arrays.toString(resultado));
+                    //System.out.println("aleatorio: " + Arrays.toString(JuegoPruebasAleatorio[i]));
+                    //System.out.println("ordenado: " + Arrays.toString(resultado));
 
                     resultado = Analizador.analiza(JuegoPruebasOrdenado[i], BubbleSort, out);
-                    System.out.println("ya ordenado: " + Arrays.toString(JuegoPruebasOrdenado[i]));
-                    System.out.println("ordenado: " + Arrays.toString(resultado));
+                    //System.out.println("ya ordenado: " + Arrays.toString(JuegoPruebasOrdenado[i]));
+                    //System.out.println("ordenado: " + Arrays.toString(resultado));
 
                     resultado = Analizador.analiza(JuegoPruebasInverso[i], BubbleSort, out);
-                    System.out.println("inverso: " + Arrays.toString(JuegoPruebasInverso[i]));
-                    System.out.println("ordenado: " + Arrays.toString(resultado));
+                    //System.out.println("inverso: " + Arrays.toString(JuegoPruebasInverso[i]));
+                    //System.out.println("ordenado: " + Arrays.toString(resultado));
                     out.println();
                     tam *= 10;
                 }
                 out.println("QuickSort");
                 tam = 100;
                 for (int i = 0; i < 3; i++) {
+                    out.print(tam + "\t");
+                    //System.out.println("tamaño: " + tam);
                     resultado = Analizador.analiza(JuegoPruebasAleatorio[i], QuickSort, out);
-                    System.out.println("aleatorio: "+Arrays.toString(JuegoPruebasAleatorio[i]));
-                    System.out.println("ordenado: "+Arrays.toString(resultado));
+                    //System.out.println("aleatorio: "+Arrays.toString(JuegoPruebasAleatorio[i]));
+                    //System.out.println("ordenado: "+Arrays.toString(resultado));
 
                     resultado = Analizador.analiza(JuegoPruebasOrdenado[i], QuickSort, out);
-                    System.out.println("ya ordenado: "+Arrays.toString(JuegoPruebasOrdenado[i]));
-                    System.out.println("ordenado: "+Arrays.toString(resultado));
+                    //System.out.println("ya ordenado: "+Arrays.toString(JuegoPruebasOrdenado[i]));
+                    //System.out.println("ordenado: "+Arrays.toString(resultado));
 
                     resultado = Analizador.analiza(JuegoPruebasInverso[i], QuickSort, out);
-                    System.out.println("inverso: "+Arrays.toString(JuegoPruebasInverso[i]));
-                    System.out.println("ordenado: "+Arrays.toString(resultado));
+                    //System.out.println("inverso: "+Arrays.toString(JuegoPruebasInverso[i]));
+                    //System.out.println("ordenado: "+Arrays.toString(resultado));
                     out.println();
                     tam *= 10;
                 }
@@ -245,51 +253,57 @@ import java.util.function.Function;
                 out.println("MergeSort");
                 tam = 100;
                 for (int i = 0; i < 3; i++) {
+                    out.print(tam + "\t");
+                    //System.out.println("tamaño: " + tam);
                     resultado = Analizador.analiza(JuegoPruebasAleatorio[i], MergeSort, out);
-                    System.out.println("aleatorio: "+Arrays.toString(JuegoPruebasAleatorio[i]));
-                    System.out.println("ordenado: "+Arrays.toString(resultado));
+                    //System.out.println("aleatorio: "+Arrays.toString(JuegoPruebasAleatorio[i]));
+                    //System.out.println("ordenado: "+Arrays.toString(resultado));
 
                     resultado = Analizador.analiza(JuegoPruebasOrdenado[i], MergeSort, out);
-                    System.out.println("ya ordenado: "+Arrays.toString(JuegoPruebasOrdenado[i]));
-                    System.out.println("ordenado: "+Arrays.toString(resultado));
+                    //System.out.println("ya ordenado: "+Arrays.toString(JuegoPruebasOrdenado[i]));
+                    //System.out.println("ordenado: "+Arrays.toString(resultado));
 
                     resultado = Analizador.analiza(JuegoPruebasInverso[i], MergeSort, out);
-                    System.out.println("inverso: "+Arrays.toString(JuegoPruebasInverso[i]));
-                    System.out.println("ordenado: "+Arrays.toString(resultado));
+                    //System.out.println("inverso: "+Arrays.toString(JuegoPruebasInverso[i]));
+                    //System.out.println("ordenado: "+Arrays.toString(resultado));
                     out.println();
                     tam *= 10;
                 }
                 out.println("BusquedaLineal");
                 tam = 100;
                 for (int i = 0; i < 3; i++) {
+                    out.print(tam + "\t");
+                    //System.out.println("tamaño: " + tam);
                     resultado = Analizador.analiza(JuegoPruebasAleatorio[i], BusquedaLineal, out);
-                    System.out.println("aleatorio: "+Arrays.toString(JuegoPruebasAleatorio[i]));
-                    System.out.println("ordenado: "+Arrays.toString(resultado));
+                    //System.out.println("aleatorio: "+Arrays.toString(JuegoPruebasAleatorio[i]));
+                    //System.out.println("ordenado: "+Arrays.toString(resultado));
 
                     resultado = Analizador.analiza(JuegoPruebasOrdenado[i], BusquedaLineal, out);
-                    System.out.println("ya ordenado: "+Arrays.toString(JuegoPruebasOrdenado[i]));
-                    System.out.println("ordenado: "+Arrays.toString(resultado));
+                    //System.out.println("ya ordenado: "+Arrays.toString(JuegoPruebasOrdenado[i]));
+                    //System.out.println("ordenado: "+Arrays.toString(resultado));
 
                     resultado = Analizador.analiza(JuegoPruebasInverso[i], BusquedaLineal, out);
-                    System.out.println("inverso: "+Arrays.toString(JuegoPruebasInverso[i]));
-                    System.out.println("ordenado: "+Arrays.toString(resultado));
+                    //System.out.println("inverso: "+Arrays.toString(JuegoPruebasInverso[i]));
+                    //System.out.println("ordenado: "+Arrays.toString(resultado));
                     out.println();
                     tam *= 10;
                 }
                 out.println("BusquedaBinaria");
                 tam = 100;
                 for (int i = 0; i < 3; i++) {
+                    out.print(tam + "\t");
+                    //System.out.println("tamaño: " + tam);
                     resultado = Analizador.analiza(JuegoPruebasAleatorio[i], BusquedaBinaria, out);
-                    System.out.println("aleatorio: "+Arrays.toString(JuegoPruebasAleatorio[i]));
-                    System.out.println("ordenado: "+Arrays.toString(resultado));
+                    //System.out.println("aleatorio: "+Arrays.toString(JuegoPruebasAleatorio[i]));
+                    //System.out.println("ordenado: "+Arrays.toString(resultado));
 
                     resultado = Analizador.analiza(JuegoPruebasOrdenado[i], BusquedaBinaria, out);
-                    System.out.println("ya ordenado: "+Arrays.toString(JuegoPruebasOrdenado[i]));
-                    System.out.println("ordenado: "+Arrays.toString(resultado));
+                    //System.out.println("ya ordenado: "+Arrays.toString(JuegoPruebasOrdenado[i]));
+                    //System.out.println("ordenado: "+Arrays.toString(resultado));
 
                     resultado = Analizador.analiza(JuegoPruebasInverso[i], BusquedaBinaria, out);
-                    System.out.println("inverso: "+Arrays.toString(JuegoPruebasInverso[i]));
-                    System.out.println("ordenado: "+Arrays.toString(resultado));
+                    //System.out.println("inverso: "+Arrays.toString(JuegoPruebasInverso[i]));
+                    //System.out.println("ordenado: "+Arrays.toString(resultado));
                     out.println();
                     tam *= 10;
                 }
@@ -297,7 +311,8 @@ import java.util.function.Function;
             } catch (Exception e) {
                 System.out.print("error en fichero");
             }
-            System.out.print("Fin");
+            //System.out.print("Fin");
+            Lectura.leerTiempos();
         }
     }
 

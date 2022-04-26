@@ -15,13 +15,23 @@ import java.io.File;
 import java.text.DecimalFormat;
 import org.jfree.chart.ChartFactory;
 import java.text.NumberFormat;
+import dominio.*;
 
-public class Grafico {
+    public class Grafico {
     public static void main(String[] args) throws Exception {
+        Lectura lectura = new Lectura();
+        int [][] arrayTiemposTemp = new int [7][9];
+        int[][] tiempos = lectura.leerTiempos();
+        for (int i = 0; i < 9; i++) {
+            for (int j = 0; j < 7; j++) {
+                arrayTiemposTemp[j][i] = tiempos[j][i];
+            }
+        }
+
         DefaultXYDataset dataset = new DefaultXYDataset();
-        dataset.addSeries("firefox", new double[][] {{ 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017 }, { 25, 29.1, 32.1, 32.9, 31.9, 25.5, 20.1, 18.4, 15.3, 11.4, 9.5 }});
-        dataset.addSeries("ie", new double[][] {{ 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017 }, { 67.7, 63.1, 60.2, 50.6, 41.1, 31.8, 27.6, 20.4, 17.3, 12.3, 8.1 }});
-        dataset.addSeries("chrome", new double[][] {{ 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017 }, { 0.2, 6.4, 14.6, 25.3, 30.1, 34.3, 43.2, 47.3, 58.4 }});
+        dataset.addSeries("Aleatorio", new double[][] {{arrayTiemposTemp[0][0],arrayTiemposTemp[0][3],arrayTiemposTemp[0][6]}, { 100, 1000, 10000 }});
+        dataset.addSeries("Ordenado", new double[][] {{ arrayTiemposTemp[0][1], arrayTiemposTemp[0][4], arrayTiemposTemp[0][7]    }, { 100, 1000, 10000 }});
+        dataset.addSeries("Inverso", new double[][] {{ arrayTiemposTemp[0][2], arrayTiemposTemp[0][5], arrayTiemposTemp[0][8] }, { 100, 1000, 10000 }});
         XYLineAndShapeRenderer renderer = new XYLineAndShapeRenderer();
         renderer.setSeriesPaint(0, Color.ORANGE);
         renderer.setSeriesPaint(1, Color.BLUE);
@@ -29,28 +39,29 @@ public class Grafico {
         renderer.setSeriesStroke(0, new BasicStroke(2));
         renderer.setSeriesStroke(1, new BasicStroke(2));
         renderer.setSeriesStroke(2, new BasicStroke(2));
-        JFreeChart chart = ChartFactory.createXYLineChart("MergeSort", "Size", "Time", dataset);
-        chart.getXYPlot().getRangeAxis().setRange(0, 100);
-        ((NumberAxis) chart.getXYPlot().getRangeAxis()).setNumberFormatOverride(new DecimalFormat("#'%'"));
+        JFreeChart chart = ChartFactory.createXYLineChart("BubbleSort", "Time", "Size", dataset);
+        chart.getXYPlot().getRangeAxis().setRange(0, 10000);
+        ((NumberAxis) chart.getXYPlot().getRangeAxis()).setNumberFormatOverride(new DecimalFormat("#'0'"));
         chart.getXYPlot().setRenderer(renderer);
         BufferedImage image = chart.createBufferedImage(600, 400);
-        ImageIO.write(image, "png", new File("MergeSort.png"));
+        ImageIO.write(image, "png", new File("BubbleSort.png"));
 
         DefaultXYDataset dataset2 = new DefaultXYDataset();
-        dataset.addSeries("firefox", new double[][] {{ 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017 }, { 25, 29.1, 32.1, 32.9, 31.9, 25.5, 20.1, 18.4, 15.3, 11.4, 9.5 }});
-        dataset.addSeries("ie", new double[][] {{ 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017 }, { 67.7, 63.1, 60.2, 50.6, 41.1, 31.8, 27.6, 20.4, 17.3, 12.3, 8.1 }});
-        dataset.addSeries("chrome", new double[][] {{ 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017 }, { 0.2, 6.4, 14.6, 25.3, 30.1, 34.3, 43.2, 47.3, 58.4 }});
+        dataset2.addSeries("firefox", new double[][] {{ 100, 1000, 10000 }, {  }});
+        dataset2.addSeries("ie", new double[][] {{ 100, 1000, 10000 }, { 67.7, 63.1, 60.2, 50.6, 41.1, 31.8, 27.6, 20.4, 17.3, 12.3, 8.1 }});
+        dataset2.addSeries("chrome", new double[][] {{ 100, 1000, 10000 }, { 0.2, 6.4, 14.6, 25.3, 30.1, 34.3, 43.2, 47.3, 58.4 }});
         XYLineAndShapeRenderer renderer2 = new XYLineAndShapeRenderer();
-        renderer.setSeriesPaint(0, Color.ORANGE);
-        renderer.setSeriesPaint(1, Color.BLUE);
-        renderer.setSeriesPaint(2, Color.GREEN);
-        renderer.setSeriesStroke(0, new BasicStroke(2));
-        renderer.setSeriesStroke(1, new BasicStroke(2));
-        renderer.setSeriesStroke(2, new BasicStroke(2));
+        renderer2.setSeriesPaint(0, Color.ORANGE);
+        renderer2.setSeriesPaint(1, Color.BLUE);
+        renderer2.setSeriesPaint(2, Color.GREEN);
+        renderer2.setSeriesStroke(0, new BasicStroke(2));
+        renderer2.setSeriesStroke(1, new BasicStroke(2));
+        renderer2.setSeriesStroke(2, new BasicStroke(2));
         JFreeChart chart2 = ChartFactory.createXYLineChart("QuickSort", "Size", "Time", dataset2);
-        chart.getXYPlot().getRangeAxis().setRange(0, 100);
-        ((NumberAxis) chart.getXYPlot().getRangeAxis()).setNumberFormatOverride(new DecimalFormat("#'%'"));
-        chart.getXYPlot().setRenderer(renderer2);
-        BufferedImage image2 = chart.createBufferedImage(600, 400);
+        chart2.getXYPlot().getRangeAxis().setRange(0, 100);
+        ((NumberAxis) chart2.getXYPlot().getRangeAxis()).setNumberFormatOverride(new DecimalFormat("#'%'"));
+        chart2.getXYPlot().setRenderer(renderer2);
+        BufferedImage image2 = chart2.createBufferedImage(600, 400);
         ImageIO.write(image2, "png", new File("QuickSort.png"));
-    }}
+        }
+    }
